@@ -8,7 +8,7 @@ response = requests.get(url)
 result = json.loads(response.text)
 
 for nn in result["terms"]["OnDemand"]:
-    # print(nn)
+    
     for ff in result["terms"]["OnDemand"][nn]:
 
         for mm in result["terms"]["OnDemand"][nn][ff]["priceDimensions"]:
