@@ -16,5 +16,6 @@ for nn in result["terms"]["OnDemand"]:
             for ww in result["terms"]["OnDemand"][nn][ff]["priceDimensions"][mm]["description"].split('\n'):
 
                 if re.search("db.t3", ww.strip()):
-                    print(ww.strip())
+                    print("")
+                    print(ww.strip()[13:])
                     print("PRICE ", result["terms"]["OnDemand"][nn][ff]["priceDimensions"][mm]["pricePerUnit"]["USD"].split('\n'), "USD")
