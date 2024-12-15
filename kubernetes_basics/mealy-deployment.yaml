@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: mealy
   name: mealy
+  namespace: andy
 spec:
   replicas: 1
   selector:
@@ -13,12 +13,11 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: mealy
     spec:
       containers:
-      - image: nginx
-        name: nginx
-        resources: {}
-status: {}
+        - image: ghcr.io/mealie-recipes/mealie:v1.2.0
+          name: mealie
+          ports: 
+            - containerPort: 9000
