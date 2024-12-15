@@ -1,0 +1,56 @@
+---
+- name: Apache install  become: true
+  hosts: webservers
+  tasks:
+  - name: "install Apache server"
+    yum:
+      name: httpd
+      state: latest
+  
+  - name: "enable and start Apache server"
+    service:
+      enabled: true
+      name: httpd
+      state: started
+  
+  - firewalld:
+      immediate: true
+      permanent: true
+      service: http
+      state: enabled
+    name: "open firewall port"
+
+  - group:
+      name: web
+      state: present
+
+  - name: "create web admin user"
+    user:
+      append: true
+      comment: "Web Admin"
+      groups: web
+      name: webadm
+      password: $6$rounds=656000$bp7zTIl.nar2WQPS$U5CBB15GHnzBqnhY0r7UX65FrBI6w/w9YcAL2kN9PpDaYQIDY6Bi.CAEL6PRRKUqe2bJYgsayyh9NOP1kUy4w.
+
+  - file:
+      group: web
+      mode: "u=rwx,g=rwx,o=rx,g+s"
+      owner: root
+      path: /var/www/html
+      state: directory
+
+  - name: set content directory group/permissions
+    file:
+      path: /var/www/html
+      owner: root
+      group: web
+      state: directory
+      mode: u=rwx,g=rwx,o=rx,g+s
+
+  - name: create default page content
+    copy:
+      content: "Welcome to {{ ansible_fqdn}} on {{ ansible_default_ipv4.address }}"
+      dest: /var/www/html/index.html
+      owner: webadm
+      group: web
+      mode: u=rw,g=rw,o=r
