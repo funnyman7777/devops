@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: andi
+  name: andi
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: andi
+  template:
+    metadata:
+      labels:
+        app: andi
+    spec:
+      containers:
+        - image: httpd:alpine3.18
+          name: httpd
+  strategy:
+    type: Recreate
